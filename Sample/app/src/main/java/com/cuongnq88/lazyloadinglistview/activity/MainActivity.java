@@ -20,6 +20,7 @@ public class MainActivity extends ActionBarActivity {
     private View mFooter;
     private BaseAdapter mAdapter;
     private List<String> mData;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,10 +39,6 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onAddLazyLoading() {
                 mListView.addFooterView(mFooter);
-                if(mData!=null){
-                    List<String> data = createItemList(mData.size(),10);
-                    mData.addAll(data);
-                }
             }
 
             @Override
@@ -51,6 +48,15 @@ public class MainActivity extends ActionBarActivity {
                     mAdapter.notifyDataSetChanged();
                 }
             }
+
+            @Override
+            public void onLoadingData() {
+                if (mData != null) {
+                    List<String> data = createItemList(mData.size(), 15);
+                    mData.addAll(data);
+                }
+            }
+
         });
     }
 
@@ -58,7 +64,7 @@ public class MainActivity extends ActionBarActivity {
      * loadData
      */
     private void loadData() {
-        mData = createItemList(0,30);
+        mData = createItemList(0, 30);
         mAdapter = new MyBaseAdapter(this, mData);
         mListView.setAdapter(mAdapter);
     }
@@ -76,6 +82,7 @@ public class MainActivity extends ActionBarActivity {
 
     /**
      * createItemList
+     *
      * @param position
      * @param size
      * @return

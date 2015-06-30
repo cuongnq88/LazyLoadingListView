@@ -22,6 +22,15 @@ public abstract class OnLazyLoadingListener implements AbsListView.OnScrollListe
             onRemoveLazyLoading();
         }
     };
+
+    private Runnable mRunnable = new Runnable() {
+        @Override
+        public void run() {
+            onLoadingData();
+            mHandler.sendEmptyMessage(0);
+        }
+    };
+
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
 
@@ -37,7 +46,7 @@ public abstract class OnLazyLoadingListener implements AbsListView.OnScrollListe
             if (firstVisibleItem + visibleItemCount >= totalItemCount - LIMIT_ITEM) {
                 isLoading = true;
                 onAddLazyLoading();
-                mHandler.sendEmptyMessageDelayed(0,3000);
+                mHandler.postDelayed(mRunnable, 3000);
             }
         }
     }
@@ -45,4 +54,6 @@ public abstract class OnLazyLoadingListener implements AbsListView.OnScrollListe
     public abstract void onAddLazyLoading();
 
     public abstract void onRemoveLazyLoading();
+
+    public abstract void onLoadingData();
 }
